@@ -49,22 +49,21 @@ function mostrarAlerta(mensaje) {
 
 
 // Busca las imagenes en una API
-function buscarImagenes() {
+async function buscarImagenes() {
     const terminoBusqueda = document.querySelector('#termino').value;
 
     const key = '1732750-d45b5378879d1e877cd1d35a6';
     const url = `https://pixabay.com/api/?key=${key}&q=${terminoBusqueda}&per_page=30&page=${paginaActual}`;
 
-    fetch(url) 
-        .then(respuesta => respuesta.json())
-        .then( resultado => {
-            totalPaginas = calcularPaginas(resultado.totalHits);
+    try{
+        const respuesta = await fetch(url);
+        const resultado = await respuesta.json();
+        totalPaginas = calcularPaginas(resultado.totalHits);
+        mostrarImagenes(resultado.hits);
 
-            // console.log(totalPaginas)
-
-            mostrarImagenes(resultado.hits);
-        });
-
+    }catch(error){
+        console.log(error)
+    }
 
 }
 
